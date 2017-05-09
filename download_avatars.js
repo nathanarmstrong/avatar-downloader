@@ -9,11 +9,16 @@ var options = {
   }
 };
 
+function displayname(name){
+  console.log("name: ", name.avatar_url)
+}
+
 function callback(error, response, body) {
   if (!error && response.statusCode == 200) {
     var info = JSON.parse(body);
     console.log(info);
   }
+  info.forEach(displayname)
 }
 
 request(options, callback)
