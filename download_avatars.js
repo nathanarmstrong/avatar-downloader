@@ -1,8 +1,8 @@
 var request = require('request');
 var fs = require('fs');
-var folders = {
-  images: './images'
-}
+
+var repo = process.argv[2]
+var owner = process.argv[3]
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -11,22 +11,25 @@ var options = {
   headers: {
     'User-Agent': 'request'
   }
-};
-
-function displayname(name){
-  console.log("name: ", name.avatar_url)
 }
 
-function callback(error, response, body) {
-  if (!error && response.statusCode == 200) {
-    var info = JSON.parse(body);
-    console.log(info)
+
+  function displayname(name){
+    console.log("name: ", name.avatar_url)
+}
+
+  function callback(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      console.log(info)
+    }
+  process.argv.forEach((repo, owner) =>{
+    cnosole.log(`${repo}: ${owner}`);
+  });
   }
-  info.forEach(displayname)
-}
 
-function downloadImageByURL(url, filePath) {
-  request.get(url)
+  function downloadImageByURL(url, filePath) {
+    request.get(url)
        .on('error', function (err) {
          throw err;
        })
@@ -34,12 +37,10 @@ function downloadImageByURL(url, filePath) {
          console.log('Response Status Code: ', response.statusCode);
        })
        .pipe(fs.createWriteStream(filePath))
+     }
 
-}
 
-request(options, callback)
-
-downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg")
+downloadImageByURL(repo, owner)
 
 
 
