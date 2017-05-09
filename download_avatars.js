@@ -1,4 +1,8 @@
 var request = require('request');
+var fs = require('fs');
+var folders = {
+  images: './images'
+}
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -16,10 +20,27 @@ function displayname(name){
 function callback(error, response, body) {
   if (!error && response.statusCode == 200) {
     var info = JSON.parse(body);
-    console.log(info);
+    console.log(info)
   }
   info.forEach(displayname)
 }
 
+function downloadImageByURL(url, filePath) {
+  request.get(url)
+       .on('error', function (err) {
+         throw err;
+       })
+       .on('response', function (response) {
+         console.log('Response Status Code: ', response.statusCode);
+       })
+       .pipe(fs.createWriteStream(filePath))
+
+}
+
 request(options, callback)
+
+downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg")
+
+
+
 
